@@ -10,6 +10,20 @@ export async function getRooms() {
 	}
 
 	return data;
+} 
+export async function getRoom(id) {
+	const { data, error } = await supabase
+		.from("rooms")
+		.select("*")
+		.eq("id", id)
+		.single();
+
+	if (error) {
+		console.error(error);
+		throw new Error("Could not load this room");
+	}
+
+	return data;
 }
 
 export async function createEditRoom(newRoom, id) {

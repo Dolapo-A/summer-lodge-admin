@@ -13,6 +13,12 @@
 
 /* Colors adapted from https://tailwindcss.com/docs/customizing-colors */
 
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 :root {
   /* Indigo */
   --color-brand-50: #eef2ff;

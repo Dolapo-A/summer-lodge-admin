@@ -1,7 +1,26 @@
 /* eslint-disable no-unused-vars */
+import { eachDayOfInterval } from "date-fns";
 import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
+
+export async function createBooking(bookingData, formData) {
+	const newBooking = {
+		...bookingData,
+		// guestId: ,
+		numGuests: Number(formData.get("numGuests")),
+		observations: formData.get("observations").slice(0, 1000),
+		extrasPrice: 0,
+		totalPrice: bookingData.roomPrice,
+		isPaid: false,
+		hasBreakfast: false,
+		status: "unconfirmed",
+	};
+
+	const { error } = await supabase.from("bookings").insert([newBooking]);
+
+	if (error) throw new Error("Booking could not be created");
+}
 
 export async function getBookings({ filter, sortBy, page }) {
 	let query = supabase
@@ -49,6 +68,37 @@ export async function getBooking(id) {
 	}
 
 	return data;
+}
+
+// New
+export async function getBookedDatesByRoomId(roomId) {
+	let today = new Date();
+	today.setUTCHours(0, 0, 0, 0);
+	today = today.toISOString();
+
+	// Getting all bookings
+	const { data, error } = await supabase
+		.from("bookings")
+		.select("*")
+		.eq("roomId", roomId)
+		.or(`startDate.gte.${today},status.eq.checked-in`);
+
+	if (error) {
+		console.error(error);
+		throw new Error("Bookings could not be loaded");
+	}
+
+	// Converting to actual dates to be displayed in the date picker
+	const bookedDates = data
+		.map((booking) => {
+			return eachDayOfInterval({
+				start: new Date(booking.startDate),
+				end: new Date(booking.endDate),
+			});
+		})
+		.flat();
+
+	return bookedDates;
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.

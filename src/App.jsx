@@ -7,7 +7,7 @@ import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
-import GlobalStyles from "./styles/globalStyles";
+import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -17,6 +17,7 @@ import Checkin from "./pages/checkin";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import Guests from "./pages/Guests";
+import Reservation from "./pages/Reservation";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -33,6 +34,7 @@ function App() {
 			<QueryClientProvider client={queryClient}>
 				<ReactQueryDevtools initialIsOpen={false} />
 				<GlobalStyles />
+
 				<BrowserRouter>
 					<Routes>
 						<Route
@@ -45,6 +47,7 @@ function App() {
 							<Route index element={<Navigate replace to="dashboard" />} />
 							<Route path="dashboard" element={<Dashboard />} />
 							<Route path="bookings" element={<Bookings />} />
+							<Route path="reservations/:guestId" element={<Reservation />} />
 							<Route path="bookings/:bookingId" element={<Booking />} />
 							<Route path="checkin/:bookingId" element={<Checkin />} />
 							<Route path="cabins" element={<Cabins />} />

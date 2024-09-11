@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { useQuery } from "@tanstack/react-query";
-import { getRooms } from "../../services/apiRooms";
+import { getRoom, getRooms } from "../../services/apiRooms";
+import { useParams } from "react-router-dom";
 
 export function useRooms() {
-    const {
+	const {
 		isLoading,
 		data: rooms,
 		error,
@@ -12,6 +13,5 @@ export function useRooms() {
 		queryFn: getRooms,
 	});
 
-
-    return { isLoading, rooms};
+	return { isLoading, rooms };
 }

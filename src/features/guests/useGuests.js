@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getGuests } from "../../services/apiGuests";
 
 export function useGuests() {
-    const {
+	const {
 		isLoading,
 		data: guests,
 		error,
@@ -12,6 +12,5 @@ export function useGuests() {
 		queryFn: getGuests,
 	});
 
-
-    return { isLoading, guests};
+	return { isLoading, guests };
 }

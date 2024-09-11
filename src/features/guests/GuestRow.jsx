@@ -5,12 +5,18 @@ import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
 import CreateGuestForm from "./CreateGuestForm";
 import { useDeleteGuest } from "./useDeleteGuest";
-import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import {
+	HiCalendarDays,
+	HiPencil,
+	HiSquare2Stack,
+	HiTrash,
+} from "react-icons/hi2";
 import { useCreateGuest } from "./useCreateGuest";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import { useNavigate } from "react-router-dom";
 // const TableRow = styled.div`
 // 	display: grid;
 // 	grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -41,8 +47,14 @@ const Nathionalid = styled.div`
 	color: var(--color-green-700);
 `;
 
+const StyledListReservation = styled.ul`
+	background-color: var(--color-grey-0);
+`;
+
 function GuestRow({ guest }) {
 	const { isDeleting, deleteGuest } = useDeleteGuest();
+
+	const navigate = useNavigate();
 
 	const {
 		id: guestId,
@@ -66,6 +78,13 @@ function GuestRow({ guest }) {
 						<Menus.Toggle id={guestId} />
 
 						<Menus.List id={guestId}>
+							<Menus.Button
+								icon={<HiCalendarDays />}
+								onClick={() => navigate(`/reservations/${guestId}`)}
+							>
+								Reservation
+							</Menus.Button>
+
 							<Modal.Open opens="edit">
 								<Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
 							</Modal.Open>

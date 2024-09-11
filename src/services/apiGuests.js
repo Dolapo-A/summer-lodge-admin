@@ -13,6 +13,22 @@ export async function getGuests() {
 	return data;
 }
 
+export async function getGuest(id) {
+	const { data, error } = await supabase
+		.from("guests")
+		.select("*")
+		.eq("id", id)
+		.single();
+
+	if (error) {
+		console.error(error);
+		throw new Error("Could not load guests");
+	}
+	console.log(data);
+
+	return data;
+}
+
 export async function createEditGuest(newGuest, id) {
 	console.log(newGuest, id);
 	// const hasImagePath = newGuest.image?.startsWith?.(supabaseUrl);
