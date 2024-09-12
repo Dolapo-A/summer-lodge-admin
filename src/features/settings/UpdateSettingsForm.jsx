@@ -14,13 +14,15 @@ function UpdateSettingsForm() {
 			maxBookingLength,
 			maxGuestsPerBooking,
 			breakfastPrice,
+			laundryPrice,
 		} = {},
 	} = useSettings();
 	console.log(
 		minBookingLength,
 		maxBookingLength,
 		maxGuestsPerBooking,
-		breakfastPrice
+		breakfastPrice,
+		laundryPrice
 	);
 	const { isUpdating, updateSetting } = useUpdateSetting();
 	if (isLoading) return <Spinner />;
@@ -68,6 +70,15 @@ function UpdateSettingsForm() {
 					defaultValue={breakfastPrice}
 					disabled={isUpdating}
 					onBlur={(e) => handleUpdate(e, "breakfastPrice")}
+				/>
+			</FormRow>
+			<FormRow label="Laundry price">
+				<Input
+					type="number"
+					id="laundry-price"
+					defaultValue={laundryPrice}
+					disabled={isUpdating}
+					onBlur={(e) => handleUpdate(e, "laundryPrice")}
 				/>
 			</FormRow>
 		</Form>

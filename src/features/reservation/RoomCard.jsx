@@ -21,7 +21,7 @@ const StyledRoomCard = styled.div`
 	overflow: hidden;
 
 	img {
-		height: 200px;
+		height: 100%;
 		width: 150px;
 		object-fit: cover;
 	}
@@ -54,12 +54,12 @@ const RoomInfo = styled.div`
 		margin-bottom: 1.2rem;
 	}
 
-	h4{
+	h4 {
 		font-size: 1.6rem;
 		margin-bottom: 1rem;
 		font-weight: 100;
 		text-decoration: line-through;
-		color: var(--color-grey-500);
+		color: var(--color-red-700);
 	}
 
 	p {
@@ -68,8 +68,6 @@ const RoomInfo = styled.div`
 	}
 `;
 
-
-
 const PriceInfo = styled.div`
 	align-items: baseline;
 	gap: 0.5rem;
@@ -77,7 +75,7 @@ const PriceInfo = styled.div`
 	justify-content: end;
 
 	h2 {
-		font-size: 2.4rem;
+		font-size: 2.2rem;
 		font-weight: 100;
 	}
 
@@ -88,7 +86,7 @@ const PriceInfo = styled.div`
 	}
 `;
 
-function RoomCard({ room: initialRoomData }) {
+function RoomCard({ room: initialRoomData, settings }) {
 	const {
 		id: roomId,
 		name,
@@ -104,19 +102,18 @@ function RoomCard({ room: initialRoomData }) {
 			<CardContent>
 				<RoomInfo>
 					<h3>Room {name}</h3>
-					{/* <p>Room Id {roomId}</p> */}
 					<p>For up to {maxCapacity} guests</p>
 					<PriceInfo>
 						<span>
 							{discount > 0 ? (
 								<>
-									<h2>{formatCurrency(regularPrice-discount)} </h2>
+									<h2>{formatCurrency(regularPrice - discount)} </h2>
 									<h4>{formatCurrency(regularPrice)}</h4>
 								</>
 							) : (
 								<h2>{formatCurrency(regularPrice)}</h2>
 							)}
-							<p> / night</p>
+							<p> /night</p>
 						</span>
 					</PriceInfo>
 				</RoomInfo>
@@ -127,7 +124,11 @@ function RoomCard({ room: initialRoomData }) {
 								<Button>Reservation</Button>
 							</Modal.Open>
 							<Modal.Window name="reserve">
-								<ReservationContent roomId={roomId} key={roomId} />
+								<ReservationContent
+									settings={settings}
+									roomId={roomId}
+									key={roomId}
+								/>
 							</Modal.Window>
 						</Modal>
 					</Menus>
@@ -137,14 +138,14 @@ function RoomCard({ room: initialRoomData }) {
 	);
 }
 
-function ReservationContent({ roomId }) {
+function ReservationContent({ roomId, settings }) {
 	const { isLoading, room, error } = useRoom(roomId);
 
 	if (isLoading) return <Spinner />;
 	if (error) return <div>Error: {error.message}</div>;
 	if (!room) return <div>No room data available.</div>;
 
-	return <Reservation room={room} />;
+	return <Reservation room={room} settings={settings} />;
 }
 
 export default RoomCard;

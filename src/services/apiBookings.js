@@ -4,22 +4,24 @@ import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function createBooking(bookingData, formData) {
-	const newBooking = {
-		...bookingData,
-		// guestId: ,
-		numGuests: Number(formData.get("numGuests")),
-		observations: formData.get("observations").slice(0, 1000),
-		extrasPrice: 0,
-		totalPrice: bookingData.roomPrice,
-		isPaid: false,
-		hasBreakfast: false,
-		status: "unconfirmed",
-	};
+export async function createBooking(bookingData) {
+	// const newBooking = {
+	// 	...bookingData,
+	// 	guestId: guestId,
+	// 	numGuests: Number(formData.get("numGuests")),
+	// 	observations: formData.get("observations").slice(0, 1000),
+	// 	extrasPrice: 0,
+	// 	totalPrice: bookingData.roomPrice,
+	// 	isPaid: false,
+	// 	hasBreakfast: false,
+	// 	status: "unconfirmed",
+	// };
 
-	const { error } = await supabase.from("bookings").insert([newBooking]);
+	const { data, error } = await supabase.from("bookings").insert([bookingData]);
 
 	if (error) throw new Error("Booking could not be created");
+
+	return data;
 }
 
 export async function getBookings({ filter, sortBy, page }) {
@@ -81,7 +83,8 @@ export async function getBookedDatesByRoomId(roomId) {
 		.from("bookings")
 		.select("*")
 		.eq("roomId", roomId)
-		.or(`startDate.gte.${today},status.eq.checked-in`);
+		.or(`startDate.gte.${today},and(status.eq.checked-in,endDate.gte.${today})`)
+		.not("status", "eq", "checked-out");
 
 	if (error) {
 		console.error(error);
@@ -91,9 +94,13 @@ export async function getBookedDatesByRoomId(roomId) {
 	// Converting to actual dates to be displayed in the date picker
 	const bookedDates = data
 		.map((booking) => {
+			const start = new Date(booking.startDate);
+			const end = new Date(booking.endDate);
+
+			const effectiveStart = start < today ? today : start;
 			return eachDayOfInterval({
-				start: new Date(booking.startDate),
-				end: new Date(booking.endDate),
+				start: effectiveStart,
+				end: end,
 			});
 		})
 		.flat();

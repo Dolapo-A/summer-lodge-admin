@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
@@ -114,6 +115,7 @@ function BookingDataBox({ booking }) {
 		extrasPrice,
 		totalPrice,
 		hasBreakfast,
+		hasLaundry,
 		observations,
 		isPaid,
 		guests: {
@@ -133,7 +135,7 @@ function BookingDataBox({ booking }) {
 				<div>
 					<HiOutlineHomeModern />
 					<p>
-						{numNights} nights in Cabin <span>{roomName}</span>
+						{numNights} nights in Room <span>{roomName}</span>
 					</p>
 				</div>
 
@@ -154,6 +156,7 @@ function BookingDataBox({ booking }) {
 					</p>
 					<span>&bull;</span>
 					<p>{email}</p>
+					<span>&bull;</span>
 					<p>{phoneNumber}</p>
 					<span>&bull;</span>
 					<p>National ID {nationalID}</p>
@@ -172,17 +175,38 @@ function BookingDataBox({ booking }) {
 					{hasBreakfast ? "Yes" : "No"}
 				</DataItem>
 
+				<DataItem icon={<HiOutlineCheckCircle />} label="Laundry included?">
+					{hasLaundry ? "Yes" : "No"}
+				</DataItem>
+
 				<Price isPaid={isPaid}>
 					<DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
-						{formatCurrency(totalPrice)}
-
+						{/* {formatCurrency(totalPrice)} */}
+{/* 
 						{hasBreakfast &&
 							` (${formatCurrency(roomPrice)} cabin + ${formatCurrency(
 								extrasPrice
-							)} breakfast)`}
+							)} breakfast)`} */}
+						{(() => {
+							if (!hasBreakfast && !hasLaundry) {
+								return formatCurrency(roomPrice);
+							} else if (!hasBreakfast && hasLaundry) {
+								return ` (${formatCurrency(roomPrice)} cabin + ${formatCurrency(
+									extrasPrice
+								)} laundry)`;
+							} else if (hasBreakfast && !hasLaundry) {
+								return ` (${formatCurrency(roomPrice)} cabin + ${formatCurrency(
+									extrasPrice
+								)} breakfast)`;
+							} else {
+								return ` (${formatCurrency(roomPrice)} cabin + ${formatCurrency(
+									extrasPrice
+								)} breakfast and laundry)`;
+							}
+						})()}
 					</DataItem>
 
-					<p>{isPaid ? "Paid" : "Will pay at property"}</p>
+					<p>{isPaid ? "Paid" : "Will pay at guest house"}</p>
 				</Price>
 			</Section>
 

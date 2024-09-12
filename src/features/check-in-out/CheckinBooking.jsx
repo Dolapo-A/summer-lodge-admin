@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 import styled from "styled-components";
 import BookingDataBox from "../../features/bookings/BookingDataBox";
@@ -28,6 +29,7 @@ const Box = styled.div`
 function CheckinBooking() {
 	const [confirmPaid, setConfirmPaid] = useState(false);
 	const [addBreakfast, setAddBreakfast] = useState(false);
+	const [addLaundry, setAddLaundry] = useState(false);
 	const { booking, isLoading } = useBooking();
 	const { settings, isLoading: isLoadingSettings } = useSettings();
 
@@ -44,25 +46,41 @@ function CheckinBooking() {
 		totalPrice,
 		numGuests,
 		hasBreakfast,
+		hasLaundry,
 		numNights,
 	} = booking;
 
 	const optionalBreakfastPrice =
 		settings.breakfastPrice * numNights * numGuests;
+	const optionalLaundryPrice = settings.laundryPrice;
 
 	function handleCheckin() {
 		if (!confirmPaid) return;
-		if (addBreakfast) {
-			checkin({
-				bookingId, breakfast: {
+
+		const breakfastData = addBreakfast
+			? {
 					hasBreakfast: true,
 					extrasPrice: optionalBreakfastPrice,
-					totalPrice: totalPrice + optionalBreakfastPrice
-			}} )
-		} else {
+					totalPrice: totalPrice + optionalBreakfastPrice,
+			  }
+			: {};
 
-			checkin({bookingId, breakfast:{}});
-		}
+		const laundryData = addLaundry
+			? {
+					hasLaundry: true,
+					extrasPrice: (breakfastData.extrasPrice || 0) + optionalLaundryPrice,
+					totalPrice:
+						(breakfastData.totalPrice || totalPrice) + optionalLaundryPrice,
+			  }
+			: {};
+
+		checkin({
+			bookingId,
+			breakfast: breakfastData,
+			laundry: laundryData,
+		});
+
+		console.log(addLaundry);
 	}
 
 	return (
@@ -82,9 +100,24 @@ function CheckinBooking() {
 							setAddBreakfast((add) => !add);
 							setConfirmPaid(false);
 						}}
-						id="Braekfast"
+						id="Breakfast"
 					>
 						Want to add breakfast for {formatCurrency(optionalBreakfastPrice)}?
+					</Checkbox>
+				</Box>
+			)}
+
+			{!hasLaundry && (
+				<Box>
+					<Checkbox
+						checked={addLaundry}
+						onChange={() => {
+							setAddLaundry((add) => !add);
+							setConfirmPaid(false);
+						}}
+						id="Laundry"
+					>
+						Want to add Laundry for {formatCurrency(optionalLaundryPrice)}?
 					</Checkbox>
 				</Box>
 			)}
@@ -97,7 +130,23 @@ function CheckinBooking() {
 					id="comfirm"
 				>
 					I confirm that {guests.fullName} has paid the total amount of{" "}
-					{!addBreakfast ? formatCurrency(totalPrice) : `${formatCurrency(totalPrice + optionalBreakfastPrice)} (${formatCurrency(optionalBreakfastPrice)} + ${formatCurrency(totalPrice)})`}.
+					{(() => {
+						const basePrice = totalPrice;
+						const breakfastPrice = addBreakfast ? optionalBreakfastPrice : 0;
+						const laundryPrice = addLaundry ? optionalLaundryPrice : 0;
+						const totalWithExtras = basePrice + breakfastPrice + laundryPrice;
+
+						if (!addBreakfast && !addLaundry) {
+							return formatCurrency(basePrice);
+						}
+
+						const parts = [formatCurrency(basePrice)];
+						if (addBreakfast) parts.push(formatCurrency(breakfastPrice));
+						if (addLaundry) parts.push(formatCurrency(laundryPrice));
+
+						return `${formatCurrency(totalWithExtras)} (${parts.join(" + ")})`;
+					})()}
+					.
 				</Checkbox>
 			</Box>
 

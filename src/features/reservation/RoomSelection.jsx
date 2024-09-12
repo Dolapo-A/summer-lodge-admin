@@ -15,7 +15,7 @@ const RoomGrid = styled.div`
 	gap: 2.5rem;
 `;
 
-function RoomSelection({ rooms }) {
+function RoomSelection({ rooms, settings }) {
 	console.log("Rooms in RoomSelection:", rooms); // Add this line for debugging
 
 	if (!rooms || rooms.length === 0) {
@@ -25,7 +25,7 @@ function RoomSelection({ rooms }) {
 	return (
 		<RoomGrid>
 			{rooms.map((room) => (
-				<RoomCard room={room} key={room.id} />
+				<RoomCard settings={settings} room={room} key={room.id} />
 			))}
 		</RoomGrid>
 	);

@@ -22,9 +22,6 @@ const StyledDateSelector = styled.div`
 
 const StyledDayPicker = styled(DayPicker)`
 	padding: 1.5rem 2.5rem;
-	border: 2px solid var(--color-grey-200);
-	border-top-right-radius: 7px;
-	border-top-left-radius: 7px;
 `;
 
 const PriceBar = styled.div`
@@ -32,12 +29,9 @@ const PriceBar = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	padding: 0 2rem;
-	background-color: var(--color-brand-700);
+	background-color: var(--color-brand-500);
 	border-top: none;
 
-	border-bottom-right-radius: 7px;
-	border-bottom-left-radius: 7px;
-	/* background-color: var(--color-grey-0); */
 	color: var(--color-brand-50);
 	height: 60px;
 `;
@@ -55,7 +49,7 @@ const PriceInfo = styled.div`
 		font-size: 1.2rem;
 		font-weight: 100;
 		text-decoration: line-through;
-		color: #9ca3af;
+		color: var(--color-red-700);
 	}
 
 	h2 {
@@ -132,28 +126,45 @@ function DateSelector({ settings, room, bookedDates }) {
 	const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
 
 	const { regularPrice, discount } = room;
+
 	const numNights =
 		range?.from && range?.to
 			? Math.max(1, differenceInDays(displayRange.to, displayRange.from))
-			: 1;
+			: 0;
 	const cabinPrice = numNights * (regularPrice - discount);
 
 	const isDisabledDate = (curDate) => {
+		// const today = startOfDay(new Date());
+
+		// return (
+		// 	(isPast(curDate) && !isSameDay(curDate, today)) ||
+		// 	bookedDates?.some((date) => isSameDay(date, curDate))
+		// );
+
 		const today = startOfDay(new Date());
-		return (
-			(isPast(curDate) && !isSameDay(curDate, today)) ||
-			bookedDates.some((date) => isSameDay(date, curDate))
-		);
+
+		// Disable dates in the past
+		if (isPast(curDate) && !isSameDay(curDate, today)) {
+			return true;
+		}
+
+		// Check if the date is in bookedDates
+		if (bookedDates && Array.isArray(bookedDates)) {
+			return bookedDates.some((bookedDate) =>
+				isSameDay(new Date(bookedDate), curDate)
+			);
+		}
+
+		return false;
 	};
 
-	console.log(numNights);
 	return (
 		<StyledDateSelector>
 			<StyledDayPicker
 				mode="range"
 				onSelect={setRange}
 				selected={displayRange}
-				min={minBookingLength + 1}
+				min={minBookingLength}
 				max={maxBookingLength}
 				fromMonth={new Date()}
 				fromDate={new Date()}

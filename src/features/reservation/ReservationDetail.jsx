@@ -3,23 +3,19 @@
 import styled from "styled-components";
 
 import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import Tag from "../../ui/Tag";
-import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button";
+
 import ButtonText from "../../ui/ButtonText";
 import Spinner from "../../ui/Spinner";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useNavigate, useParams } from "react-router-dom";
-import { HiArrowUpOnSquare } from "react-icons/hi2";
-import { useCheckout } from "../check-in-out/useCheckout";
-import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
+
 import { useGuest } from "../guests/useGuest";
 import GuestDataHeader from "./GuestDataHeader";
 import RoomSelection from "./RoomSelection";
 import { useRooms } from "../cabins/useRooms";
+import { useSettings } from "../settings/useSettings";
+import { useSearchParams } from "react-router-dom";
+import CabinTableOperations from "../cabins/CabinTableOperations";
 
 const HeadingGroup = styled.div`
 	display: flex;
@@ -30,7 +26,28 @@ const HeadingGroup = styled.div`
 function ReservationDetail() {
 	const { guest, isLoading: isLoadingGuest } = useGuest();
 	const { rooms, isLoading: isLoadingRooms } = useRooms();
+	const { settings } = useSettings();
 	const moveBack = useMoveBack();
+
+	const [searchParams] = useSearchParams();
+
+	// 1) FILTER
+	const filterValue = searchParams.get("discount") || "all";
+
+	let filteredCabins;
+	if (filterValue === "all") filteredCabins = rooms;
+	if (filterValue === "no-discount")
+		filteredCabins = rooms.filter((cabin) => cabin.discount === 0);
+	if (filterValue === "with-discount")
+		filteredCabins = rooms.filter((cabin) => cabin.discount > 0);
+
+	// 2) SORT
+	const sortBy = searchParams.get("sortBy") || "startDate-asc";
+	const [field, direction] = sortBy.split("-");
+	const modifier = direction === "asc" ? 1 : -1;
+	const sortedRooms = filteredCabins?.sort(
+		(a, b) => (a[field] - b[field]) * modifier
+	);
 
 	if (isLoadingGuest) return <Spinner />;
 
@@ -46,7 +63,10 @@ function ReservationDetail() {
 				<GuestDataHeader guest={guest} key={guest.id} />
 				<ButtonText onClick={moveBack}>&larr; Back</ButtonText>
 			</Row>
-			<RoomSelection rooms={rooms} />
+			<p>
+				<CabinTableOperations />
+			</p>
+			<RoomSelection settings={settings} rooms={sortedRooms} />
 		</>
 	);
 }
