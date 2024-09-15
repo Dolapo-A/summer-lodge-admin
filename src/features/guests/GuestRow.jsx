@@ -63,6 +63,7 @@ function GuestRow({ guest }) {
 		phoneNumber,
 		nationality,
 		nationalID,
+		gender
 	} = guest;
 
 	return (
@@ -70,6 +71,7 @@ function GuestRow({ guest }) {
 			<Name>{fullName}</Name>
 			<div>{email}</div>
 			<div>{phoneNumber}</div>
+			<Nathionalid>{gender}</Nathionalid>
 			<Country>{nationality}</Country>
 			<Nathionalid>{nationalID}</Nathionalid>
 			<div>

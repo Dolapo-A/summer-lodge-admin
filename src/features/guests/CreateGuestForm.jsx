@@ -11,6 +11,30 @@ import FormRow from "../../ui/FormRow";
 import { useForm } from "react-hook-form";
 import { useCreateGuest } from "./useCreateGuest";
 import { useEditGuest } from "./useEditGuest";
+import styled from "styled-components";
+
+const StyledSelect = styled.select`
+	font-size: 1.4rem;
+	padding: 1.2rem 1.6rem;
+	border: 1px solid
+		${(props) =>
+			props.type === "white"
+				? "var(--color-grey-100)"
+				: "var(--color-grey-300)"};
+	border-radius: var(--border-radius-sm);
+	background-color: var(--color-grey-0);
+	font-weight: 500;
+	box-shadow: var(--shadow-sm);
+`;
+
+const Option = styled.option`
+	padding: 0.75rem 1.25rem;
+	background-color: var(--color-grey-0);
+	/* color: var(--color-primary-800); */
+	width: 100%;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	border-radius: 7px;
+`;
 
 function CreateGuestForm({ cabinToEdit = {}, onCloseModal }) {
 	const { id: editId, ...editValues } = cabinToEdit;
@@ -26,8 +50,6 @@ function CreateGuestForm({ cabinToEdit = {}, onCloseModal }) {
 	});
 
 	const { errors } = formState;
-
-	const queryClient = useQueryClient();
 
 	function onSubmit(data) {
 		if (isEditSession)
@@ -102,6 +124,25 @@ function CreateGuestForm({ cabinToEdit = {}, onCloseModal }) {
 						// },
 					})}
 				/>
+			</FormRow>
+
+			<FormRow label="Gender" error={errors?.gender?.message}>
+				<StyledSelect
+					name="gender"
+					id="gender"
+					disabled={isWorking}
+					{...register("gender", { required: "This field is required" })}
+				>
+					<Option value="" key="">
+						Select Gender
+					</Option>
+					<Option value="male" key="male">
+						Male
+					</Option>
+					<Option value="female" key="female">
+						Female
+					</Option>
+				</StyledSelect>
 			</FormRow>
 
 			<FormRow label="Nationality" error={errors?.nationality?.message}>

@@ -125,6 +125,7 @@ function BookingDataBox({ booking }) {
 			country,
 			countryFlag,
 			nationalID,
+			gender,
 		},
 		rooms: { name: roomName },
 	} = booking;
@@ -155,6 +156,8 @@ function BookingDataBox({ booking }) {
 						{guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
 					</p>
 					<span>&bull;</span>
+					<p>{gender}</p>
+					<span>&bull;</span>
 					<p>{email}</p>
 					<span>&bull;</span>
 					<p>{phoneNumber}</p>
@@ -182,7 +185,7 @@ function BookingDataBox({ booking }) {
 				<Price isPaid={isPaid}>
 					<DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
 						{/* {formatCurrency(totalPrice)} */}
-{/* 
+						{/* 
 						{hasBreakfast &&
 							` (${formatCurrency(roomPrice)} cabin + ${formatCurrency(
 								extrasPrice

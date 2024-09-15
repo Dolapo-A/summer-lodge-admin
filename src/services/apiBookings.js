@@ -72,6 +72,20 @@ export async function getBooking(id) {
 	return data;
 }
 
+export async function getAllBookings() {
+    const { data, error } = await supabase
+        .from("bookings")
+        .select("*, rooms(*), guests(*)")
+        .order('startDate', { ascending: true });
+
+    if (error) {
+        console.error(error);
+        throw new Error("Could not fetch bookings");
+    }
+
+    return data;
+}
+
 // New
 export async function getBookedDatesByRoomId(roomId) {
 	let today = new Date();

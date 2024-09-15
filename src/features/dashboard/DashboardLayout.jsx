@@ -6,6 +6,7 @@ import Spinner from "../../ui/Spinner";
 import { useRecentStays } from "./useRecentStays";
 import Stats from "./Stats";
 import { useRooms } from "../cabins/useRooms";
+import BookingCalendar from "../bookings/BookingCalendar";
 
 const StyledDashboardLayout = styled.div`
 	display: grid;
@@ -29,14 +30,17 @@ function DashboardLayout() {
 	console.log(bookings);
 
 	return (
-		<StyledDashboardLayout>
-			<Stats
-				bookings={bookings}
-				confirmedStays={confirmedStays}
-				numDays={numDays}
-				roomCount={rooms.length}
-			/>
-		</StyledDashboardLayout>
+		<>
+			<StyledDashboardLayout>
+				<Stats
+					bookings={bookings}
+					confirmedStays={confirmedStays}
+					numDays={numDays}
+					roomCount={rooms.length}
+				/>
+			<BookingCalendar />
+			</StyledDashboardLayout>
+		</>
 	);
 }
 

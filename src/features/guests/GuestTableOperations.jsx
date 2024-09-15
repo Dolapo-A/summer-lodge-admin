@@ -1,30 +1,27 @@
-/* eslint-disable react/prop-types */
-import { useState } from "react";
-import styled from "styled-components";
+import TableOperations from "../../ui/TableOperations";
+import Filter from "../../ui/Filter";
+import SortBy from "../../ui/SortBy";
 
-const Styledinput = styled.input`
-	padding: 0.5rem 1.5rem;
-	border: 1px solid var(--color-indigo-700);
-	border-radius: 5px;
-	color: var(--color-grey-900);
-	background-color: var(--color-grey-100);
-`;
-
-function GuestTableOperations({ onSearch }) {
-	const [searchQuery, setSearchQuery] = useState("");
-
-	function handleSearch(event) {
-		setSearchQuery(event.target.value);
-		onSearch(event.target.value);
-	}
-
+function GuestTableOperations() {
 	return (
-		<Styledinput
-			type="text"
-			value={searchQuery}
-			onChange={handleSearch}
-			placeholder="Search guests..."
-		/>
+		<TableOperations>
+			<Filter
+				filterField="gender"
+				options={[
+					{ value: "all", label: "All" },
+					{ value: "male", label: "Male" },
+					{ value: "female", label: "Female" },
+				]}
+			/>
+
+			<SortBy
+				options={[
+					{ value: "name-asc", label: "Sort by name (A-Z)" },
+          { value: "name-desc", label: "Sort by name (Z-A)" },
+          
+				]}
+			/>
+		</TableOperations>
 	);
 }
 

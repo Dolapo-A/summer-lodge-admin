@@ -1,14 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import CabinTable from "../features/cabins/CabinTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
-import Button from "../ui/Button";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
-import AddCabin from "../features/cabins/AddCabin";
-import GuestTableOperations from "../features/guests/GuestTableOperations";
+import GuestTableSearch from "../features/guests/GuestTableSearch";
 import GuestTable from "../features/guests/GuestTable";
 import AddGuest from "../features/guests/AddGuest";
+import GuestTableOperations from "../features/guests/GuestTableOperations";
 
 function Guests() {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -17,12 +14,15 @@ function Guests() {
 		<>
 			<Row type="horizontal">
 				<Heading as="h1">All guests</Heading>
-				<GuestTableOperations onSearch={setSearchQuery} />
+				<GuestTableSearch onSearch={setSearchQuery} />
 			</Row>
 
-			<Row>
+			<Row type="vertical">
+				<Row type="horizontal">
+					<AddGuest />
+					<GuestTableOperations />
+				</Row>
 				<GuestTable searchQuery={searchQuery} />
-				<AddGuest />
 			</Row>
 		</>
 	);

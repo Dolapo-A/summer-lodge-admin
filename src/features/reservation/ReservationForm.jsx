@@ -32,12 +32,17 @@ const FormGroup = styled.div`
 `;
 
 const Select = styled.select`
-	padding: 0.75rem 1.25rem;
+	font-size: 1.4rem;
+	padding: 0.8rem 1.2rem;
+	border: 1px solid
+		${(props) =>
+			props.type === "white"
+				? "var(--color-grey-100)"
+				: "var(--color-grey-300)"};
+	border-radius: var(--border-radius-sm);
 	background-color: var(--color-grey-0);
-	/* color: #18212f; */
-	width: 100%;
-	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	border-radius: 7px;
+	font-weight: 500;
+	box-shadow: var(--shadow-sm);
 `;
 
 const Option = styled.option`
