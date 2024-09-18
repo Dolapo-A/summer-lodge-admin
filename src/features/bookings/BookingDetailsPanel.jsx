@@ -43,6 +43,9 @@ const BookingDetailsPanel = ({ selectedDate, bookings }) => {
 					<p>
 						<strong>Night(s):</strong> {booking.numNights}
 					</p>
+					<p>
+						<strong>Status:</strong> {booking.status}
+					</p>
 				</BookingItem>
 			))}
 		</PanelContainer>

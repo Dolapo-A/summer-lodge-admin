@@ -11,11 +11,12 @@ import BookingDetailsPanel from "./BookingDetailsPanel";
 import Row from "../../ui/Row";
 
 const CalendarContainer = styled.div`
+	grid-column: 1/-3;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-    padding: 0 1.6rem;
+	padding: 0 1.6rem;
 	gap: 1.6rem;
 	border: 2px solid var(--color-grey-100);
 	background-color: var(--color-grey-0);
@@ -69,7 +70,12 @@ function BookingCalendar() {
 				for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {
 					const formattedDate = format(date, "yyyy-MM-dd");
 					if (!acc[formattedDate]) acc[formattedDate] = [];
-					acc[formattedDate].push({ room: rooms.name, guest: guests.fullName, numNights: booking.numNights });
+					acc[formattedDate].push({
+						room: rooms.name,
+						guest: guests.fullName,
+						numNights: booking.numNights,
+						status: booking.status,
+					});
 				}
 
 				return acc;
