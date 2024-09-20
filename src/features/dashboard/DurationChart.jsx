@@ -156,8 +156,8 @@ function DurationChart({ confirmedStays }) {
 						data={data}
 						nameKey="duration"
 						dataKey="value"
-            paddingAngle={5}
-            innerRadius={20}
+						paddingAngle={5}
+						innerRadius={20}
 					>
 						{data.map((entry) => (
 							<Cell

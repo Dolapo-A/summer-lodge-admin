@@ -1,4 +1,3 @@
-
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
@@ -187,6 +186,27 @@ img {
 
   /* For dark mode */
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
+}
+
+/* For srollbar */
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-grey-400) var(--color-grey-200);
+    scroll-behavior: smooth;
+  }
+
+  @media print {
+  
+  .PrintContent, .PrintContent * {
+    visibility: visible;
+  }
+  .PrintContent {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 
 `;

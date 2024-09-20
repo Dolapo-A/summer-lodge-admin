@@ -84,7 +84,7 @@ function BookingRow({
 			<Stacked>
 				<span>{guestName}</span>
 				<span>{email}</span>
-				{/* <span>{phoneNumber}</span> */}
+				<span>{phoneNumber}</span>
 			</Stacked>
 
 			<Stacked>
