@@ -5,23 +5,18 @@ import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 export async function createBooking(bookingData) {
-	// const newBooking = {
-	// 	...bookingData,
-	// 	guestId: guestId,
-	// 	numGuests: Number(formData.get("numGuests")),
-	// 	observations: formData.get("observations").slice(0, 1000),
-	// 	extrasPrice: 0,
-	// 	totalPrice: bookingData.roomPrice,
-	// 	isPaid: false,
-	// 	hasBreakfast: false,
-	// 	status: "unconfirmed",
-	// };
-
 	const { data, error } = await supabase.from("bookings").insert([bookingData]);
+
+	// const {
+	// 	data: { user },
+	// } = await supabase.auth.getUser();
+
+	// console.log("Current user is" + user);
 
 	if (error) throw new Error("Booking could not be created");
 
 	return data;
+	// return { data, user };
 }
 
 export async function getBookings({ filter, sortBy, page }) {
@@ -73,17 +68,17 @@ export async function getBooking(id) {
 }
 
 export async function getAllBookings() {
-    const { data, error } = await supabase
-        .from("bookings")
-        .select("*, rooms(*), guests(*)")
-        .order('startDate', { ascending: true });
+	const { data, error } = await supabase
+		.from("bookings")
+		.select("*, rooms(*), guests(*)")
+		.order("startDate", { ascending: true });
 
-    if (error) {
-        console.error(error);
-        throw new Error("Could not fetch bookings");
-    }
+	if (error) {
+		console.error(error);
+		throw new Error("Could not fetch bookings");
+	}
 
-    return data;
+	return data;
 }
 
 // New

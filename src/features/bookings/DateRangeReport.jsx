@@ -65,9 +65,6 @@ const DateRangeReportModal = ({ startDate, endDate, bookings }) => {
 	const handlePrint = () => {
 		window.print();
 	};
-	const downloadReport = () => {
-		window.download();
-	};
 
 	const totalRevenue = bookings.reduce(
 		(sum, booking) => sum + booking.totalPrice,
@@ -91,7 +88,7 @@ const DateRangeReportModal = ({ startDate, endDate, bookings }) => {
 				</Header>
 
 				<Menus>
-					<Table columns="1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+					<Table columns="1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
 						<Table.Header>
 							<div>Date Created</div>
 							<div>Duration</div>
@@ -105,6 +102,7 @@ const DateRangeReportModal = ({ startDate, endDate, bookings }) => {
 							<div>Total Price (GHC)</div>
 							<div>Break fast</div>
 							<div>Laundry</div>
+							<div>Booked by</div>
 						</Table.Header>
 						<Table.Body
 							data={bookings}
@@ -127,14 +125,15 @@ const DateRangeReportModal = ({ startDate, endDate, bookings }) => {
 									<div>{booking.totalPrice}</div>
 									<div>{booking.hasBreakfast ? "Yes" : "No"}</div>
 									<div>{booking.hasLaundry ? "Yes" : "No"}</div>
+									<div>{booking.bookedBy ? booking.bookedBy : "—" }</div> 
 								</Table.Row>
 							)}
 						/>
 						<Table.Footer>
 							<StyledFooter>
 								<p>
-									Total Revenue from {format(startDate, "MMM dd, yyyy")} to{" "}
-									{format(endDate, "MMM dd, yyyy")}:{" "}
+									Total Revenue from {format(startDate, "MMMM dd, yyyy")} to{" "}
+									{format(endDate, "MMMM dd, yyyy")}:{" "}
 									<TotalRevenue>{formatCurrency(totalRevenue)}</TotalRevenue>
 								</p>
 								<div>

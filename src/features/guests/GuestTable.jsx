@@ -9,6 +9,19 @@ import Empty from "../../ui/Empty";
 import { useGuests } from "./useGuests";
 import GuestRow from "./GuestRow";
 
+const StyledFooter = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`;
+
+const TotalGuest = styled.span`
+	margin-left: 0.5rem;
+	font-weight: bold;
+	font-size: 1.6rem;
+`;
+
 function GuestTable({ searchQuery }) {
 	const { isLoading, guests } = useGuests();
 	const [searchParams] = useSearchParams();
@@ -44,21 +57,31 @@ function GuestTable({ searchQuery }) {
 
 	return (
 		<Menus>
-				<Table columns="1.8fr 1.8fr 1.8fr 1.5fr 1.5fr 1fr 0.4fr">
-					<Table.Header>
-						<div>name</div>
-						<div>email</div>
-						<div>phone number</div>
-						<div>gender</div>
-						<div>nationality</div>
-						<div>national id</div>
-						<div></div>
-					</Table.Header>
-					<Table.Body
-						data={sortedGuests}
-						render={(guest) => <GuestRow guest={guest} key={guest.id} />}
-					/>
-				</Table>
+			<Table columns="1.8fr 1.8fr 1.8fr 1.5fr 1.5fr 1fr 0.4fr">
+				<Table.Header>
+					<div>name</div>
+					<div>email</div>
+					<div>phone number</div>
+					<div>gender</div>
+					<div>nationality</div>
+					<div>national id</div>
+					<div></div>
+				</Table.Header>
+				<Table.Body
+					data={sortedGuests}
+					render={(guest) => <GuestRow guest={guest} key={guest.id} />}
+				/>
+				<Table.Footer>
+					<StyledFooter>
+						<p>
+							<TotalGuest>
+								{sortedGuests.length} guest
+								{sortedGuests.length > 1 ? "s" : ""}
+							</TotalGuest>
+						</p>
+					</StyledFooter>
+				</Table.Footer>
+			</Table>
 		</Menus>
 	);
 }

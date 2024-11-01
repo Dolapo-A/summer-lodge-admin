@@ -10,6 +10,7 @@ import { useGuest } from "../guests/useGuest";
 import { useCreateBooking } from "./useCreateReservation";
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../bookings/useBooking";
+import { useUser } from "../authentication/useUser";
 
 const Container = styled.div`
 	transform: scale(1);
@@ -77,12 +78,17 @@ const DateSelectionMessage = styled.p`
 
 function ReservationForm({ room }) {
 	const { id, maxCapacity, regularPrice, discount } = room;
-	const { guest, isLoading: isLoadingGuest } = useGuest();
+	const { guest } = useGuest();
 	const { createBooking, isCreating } = useCreateBooking();
 	const { range, resetRange } = useReservation();
 	const { register, handleSubmit, reset } = useForm();
-	const { isLoading: isLoadingBooking, booking } = useBooking();
 	const { id: guestId } = guest;
+	const {
+		user: {
+			email,
+			user_metadata: { fullName: currentStaffFullName },
+		},
+	} = useUser();
 
 	const startDate = range?.from;
 	const endDate = range?.to;
@@ -106,6 +112,7 @@ function ReservationForm({ room }) {
 			isPaid: false,
 			hasBreakfast: false,
 			status: "unconfirmed",
+			bookedBy: currentStaffFullName,
 		};
 
 		createBooking(bookingData, {
@@ -121,6 +128,7 @@ function ReservationForm({ room }) {
 	function onError(errors) {
 		console.log(errors);
 	}
+
 	return (
 		<Container>
 			<Form onSubmit={handleSubmit(onSubmit, onError)}>

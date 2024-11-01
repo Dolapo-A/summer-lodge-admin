@@ -24,14 +24,40 @@ const BookingItem = styled.div`
 `;
 
 const BookingDetailsPanel = ({ selectedDate, bookings }) => {
-	if (!selectedDate || !bookings || bookings.length === 0) {
-		return <PanelContainer>No bookings selected</PanelContainer>;
+	if (!selectedDate) {
+		return (
+			<PanelContainer
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					textAlign: "center",
+				}}
+			>
+				No date selected. <br></br>Select date on the calendar 👈🏽
+			</PanelContainer>
+		);
+	} else if (bookings.length === 0 || !bookings) {
+		return (
+			<PanelContainer
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					textAlign: "center",
+				}}
+			>
+				No bookings for selected date
+			</PanelContainer>
+		);
 	}
 
 	return (
 		<PanelContainer>
 			<h3>{format(selectedDate, "MMMM d, yyyy")}</h3>
-			<p>Number of bookings: <strong> {bookings.length}</strong></p>
+			<p>
+				Number of bookings: <strong> {bookings.length}</strong>
+			</p>
 			{bookings.map((booking, index) => (
 				<BookingItem key={index}>
 					<p>

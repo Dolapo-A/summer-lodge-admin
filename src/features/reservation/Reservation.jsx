@@ -6,6 +6,7 @@ import DateSelector from "./DateSelector";
 import ReservationForm from "./ReservationForm";
 import { ReservationProvider } from "./ReservationContext";
 import styled from "styled-components";
+import Heading from "../../ui/Heading";
 
 const Column = styled.div`
 	display: flex;
@@ -15,13 +16,15 @@ const Column = styled.div`
 	border: 2px solid var(--color-grey-200);
 `;
 
+
+
 function Reservation({ room, settings }) {
 	const { id: roomId, name } = room;
 	const { bookedDates: alreadyBookedDates, isLoading } = useBookedDates(roomId);
 
 	return (
 		<ReservationProvider>
-			<p>Room {name}</p>
+			<Heading as='h2' style={{marginBottom: '1.2rem'}}>Room {name}</Heading>
 			<Column>
 				<DateSelector
 					settings={settings}
