@@ -1,6 +1,6 @@
 # Wild Oasis Hotel Management System
 
-![Wild Oasis Dashboard]
+![Wild Oasis Dashboard](./src/assets/dashboard.png)
 
 An admin-only hotel management and reservation system designed to streamline operations for reservations, bookings, and inventory management.
 
@@ -10,6 +10,10 @@ An admin-only hotel management and reservation system designed to streamline ope
 - **Activity Reports**: Generate reports for activities based on selected dates.
 - **Room Inventory Management**: Upload and manage room inventory.
 - **Dashboard Analytics**: View analytics and sales data through an intuitive dashboard.
+
+## Live Demo
+
+[Wild Oasis Hotel Management System](https://hotel-management-system-ochre.vercel.app/)
 
 ## Technology Stack
 
