@@ -35,8 +35,8 @@ Ensure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo/wild-oasis.git
-   cd wild-oasis
+   git clone https://github.com/Dolapo-A/summer-lodge-admin
+   cd summer-lodge-admin
 
    ```
 
