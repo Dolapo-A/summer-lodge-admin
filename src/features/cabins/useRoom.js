@@ -11,8 +11,8 @@ export function useRoom(id) {
 	} = useQuery({
 		queryKey: ["room", id],
 		queryFn: () => getRoom(id),
-		// staleTime: 30000,
 		// enabled: !!id,
+		staleTime: 30000,
 		retry: true,
 	});
 

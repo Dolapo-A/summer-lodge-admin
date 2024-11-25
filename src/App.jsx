@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Bookings from "./pages/Bookings";
@@ -34,7 +35,7 @@ function App() {
 			<QueryClientProvider client={queryClient}>
 				<ReactQueryDevtools initialIsOpen={false} />
 				<GlobalStyles />
-
+				<Analytics />
 				<BrowserRouter>
 					<Routes>
 						<Route
