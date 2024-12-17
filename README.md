@@ -13,7 +13,7 @@ An admin-only hotel management and reservation system designed to streamline ope
 
 ## Live Demo
 
-[Wild Oasis Hotel Management System](https://hotel-management-system-ochre.vercel.app/)
+[Wild Oasis Hotel Management System](https://wild-oasis-admin-lovat.vercel.app/)
 
 ## Technology Stack
 
